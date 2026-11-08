@@ -1,0 +1,6 @@
+@tailwind base;@tailwind components;@tailwind utilities;
+html{scroll-behavior:smooth;background:#050505}
+body{@apply bg-ink font-sans text-white antialiased}
+:focus-visible{outline:2px solid #9ABF45;outline-offset:3px;border-radius:4px}
+::selection{background:#9ABF45;color:#050505}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
