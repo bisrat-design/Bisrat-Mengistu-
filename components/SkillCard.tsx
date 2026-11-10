@@ -1,3 +1,14 @@
+import { FigmaLogo, AdobeLogo } from "./SoftwareLogos";
+const logos: Record<string, React.ReactNode> = {
+  Figma: <FigmaLogo />,
+  Photoshop: <AdobeLogo abbr="Ps" bg="#001E36" fg="#31A8FF" />,
+  Illustrator: <AdobeLogo abbr="Ai" bg="#330000" fg="#FF9A00" />,
+};
 export default function SkillCard({ name }: { name: string }) {
-  return <li className="rounded-2xl border border-white/15 bg-white/5 px-6 py-4 font-semibold backdrop-blur transition hover:border-lime">{name}</li>;
+  return (
+    <li title={name} className="flex h-14 w-14 items-center justify-center transition duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+      <span aria-hidden className="flex items-center justify-center">{logos[name]}</span>
+      <span className="sr-only">{name}</span>
+    </li>
+  );
 }

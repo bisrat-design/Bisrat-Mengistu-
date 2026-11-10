@@ -1,19 +1,53 @@
 "use client";
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+
+const ease = [0.22, 1, 0.36, 1] as const;
+const corners = [["0%", "0%"], ["100%", "0%"], ["0%", "100%"], ["100%", "100%"]];
+const glow = (a: number, b: number) =>
+  `0 0 ${a}px ${a / 3}px rgba(255,255,255,.55), 0 0 ${b}px ${b / 3}px rgba(255,255,255,.28)`;
+
 export default function Hero() {
-  const r = useReducedMotion();
+  const reduce = useReducedMotion();
   return (
-    <section className="relative flex min-h-[100svh] items-center overflow-hidden px-5 pt-16 md:px-10">
-      <div className="mx-auto w-full max-w-7xl">
-        <p className="text-xl font-semibold md:text-3xl">Graphic <span className="text-white/40">Design</span></p>
-        <h1 aria-label="Portfolio" className="flex items-center bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-[clamp(3.2rem,16.5vw,15rem)] font-extrabold leading-[1.05] tracking-tight text-transparent">
-          <span aria-hidden>Portf</span>
-          <motion.span aria-hidden className="mx-[0.02em] inline-block h-[0.7em] w-[0.7em] rounded-full bg-white"
-            initial={r ? false : { scale: 0 }} animate={{ scale: 1, boxShadow: ["0 0 40px 8px rgba(255,255,255,.35)", "0 0 110px 30px rgba(255,255,255,.6)", "0 0 40px 8px rgba(255,255,255,.35)"] }}
-            transition={{ scale: { duration: 1, ease: [0.22, 1, 0.36, 1] }, boxShadow: { duration: 4, repeat: Infinity } }} />
-          <span aria-hidden>lio</span>
-        </h1>
-        <p className="mt-4 text-right text-2xl font-semibold text-lime md:text-4xl">Bisrat Mengistu</p>
+    <section className="flex min-h-[100svh] items-center justify-center px-5 pb-10 pt-24 md:px-10">
+      {/* Frame: everything inside scales with its width via container-query units (cqw) */}
+      <div className="relative w-full max-w-[1100px] border border-dotted border-white/80 [container-type:inline-size]">
+        {corners.map(([x, y]) => (
+          <span key={x + y} aria-hidden style={{ left: x, top: y }}
+            className="absolute h-[max(14px,3cqw)] w-[max(14px,3cqw)] -translate-x-1/2 -translate-y-1/2 bg-[#d9d9d9]" />
+        ))}
+
+        <div className="px-[7cqw] pb-[11cqw] pt-[8cqw]">
+          <h1>
+            <span className="sr-only">Graphic Design Portfolio by Bisrat Mengistu</span>
+            <span aria-hidden className="block">
+              <span className="block text-[max(0.95rem,3.2cqw)] font-semibold">
+                <span className="text-white">Graphic</span> <span className="text-[#5f5f5f]">Design</span>
+              </span>
+
+              <span className="block whitespace-nowrap text-[19.5cqw] font-extrabold leading-[0.95] tracking-tight">
+                <span className="bg-gradient-to-r from-white from-40% via-[#3d3d3d] via-[52%] to-[#d9d9d9] to-85% bg-clip-text text-transparent">Portf</span>
+                {/* The "o": a glowing orb cradled by hands */}
+                <span className="relative mx-[0.05em] inline-block h-[0.62em] w-[0.62em] align-[-0.03em]">
+                  <motion.span style={{ x: "-50%" }} initial={reduce ? false : { opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.1, delay: 0.5, ease }}
+                    className="absolute left-1/2 top-[38%] z-0 block w-[143%]">
+                    <Image src="/images/hands.png" alt="" width={412} height={369} priority className="h-auto w-full select-none" />
+                  </motion.span>
+                  <motion.span
+                    initial={reduce ? false : { scale: 0, boxShadow: glow(0, 0) }}
+                    animate={{ scale: 1, boxShadow: reduce ? glow(40, 100) : [glow(40, 100), glow(70, 160), glow(40, 100)] }}
+                    transition={{ scale: { duration: 1, ease }, boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 } }}
+                    className="absolute inset-0 z-10 block rounded-full bg-white" />
+                </span>
+                <span className="text-[#d9d9d9]">lio</span>
+              </span>
+
+              <span className=" mt-[1.5cqw] block  text-right text-[max(0.9rem,3cqw)] font-bold text-lime">Bisrat Mengistu</span>
+            </span>
+          </h1>
+        </div>
       </div>
     </section>
   );
